@@ -170,7 +170,13 @@ void Game::UpdateGame()
 	}
 	
 	// Did the ball collide with the bottom wall?
-	else if (mBallPos.y >= (768 - thickness) && mBallVel.y > 0.0f)
+	if (mBallPos.y >= (768 - thickness) && mBallVel.y > 0.0f)
+	{
+		mBallVel.y *= -1;
+	}
+
+	// Did the ball collide with the top wall?
+	else if (mBallPos.y <=  thickness && mBallVel.y < 0.0f)
 	{
 		mBallVel.y *= -1;
 	}
@@ -183,7 +189,7 @@ void Game::GenerateOutput()
 			mRenderer,
 			0,	// R
 			0,	// G
-			255,	// B
+			0,	// B
 			255	// A
 			);
 
@@ -205,12 +211,12 @@ void Game::GenerateOutput()
 
 	// Draw bottom wall
 	wall.y = 768 - thickness;
-	SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);
-
+	SDL_RenderFillRect(mRenderer, &wall);
+	
 	// Draw right wall
 	wall.x = 1024 - thickness;
 	wall.y = 0;
-	wall.x = thickness;
+	wall.w = thickness;
 	wall.h = 1024;
 	SDL_RenderFillRect(mRenderer, &wall);
 
